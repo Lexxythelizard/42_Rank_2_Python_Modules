@@ -31,7 +31,7 @@ def get_argc_argv() -> tuple[int, list[str]]:
     return (len(argv), argv)
 
 
-def display_args(argc: int, argv: list) -> None:
+def display_args(argc: int, argv: list[str]) -> None:
 
     i = 1
 
