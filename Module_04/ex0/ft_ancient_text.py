@@ -11,7 +11,7 @@ import io
 
 intro_str = "=== Cyber Archives Recovery ==="
 
-error_str = "Error opening file '%s': "
+error_str = "Error opening file '%s': %s"
 success_str = "Accessing file '%s'"
 content_str = "---\n\n%s\n---"
 
@@ -40,7 +40,7 @@ def file_open(path: str) -> io.TextIOWrapper | None:
     try:
         f = open(path, 'r')
     except (FileNotFoundError, PermissionError) as err:
-        print(error_str, err)
+        print(error_str % (path, err))
         return None
 
     return (f)
@@ -51,10 +51,11 @@ def file_open_no_err(path: str) -> io.TextIOWrapper:
     return open(path, 'r')
 
 
-def file_close(f: io.TextIOWrapper) -> None:
+def file_close(f: io.TextIOWrapper, path: str = '') -> None:
 
     f.close()
-    print(close_str)
+    if (path):
+        print(close_str % path)
 
 
 def file_to_str(f: io.TextIOWrapper) -> str:
@@ -92,7 +93,7 @@ def main() -> None:
         content = file_to_str(f)
         print(success_str % argv[i])
         print(content_str % content)
-        file_close(f)
+        file_close(f, argv[i])
         i += 1
 
 
