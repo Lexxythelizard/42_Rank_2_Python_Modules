@@ -2,7 +2,7 @@
 
 # +++++++++++++++++++++++++++ import +++++++++++++++++++++++++++
 
-import random
+import random as rand
 
 # +++++++++++++++++++++++++++ globals +++++++++++++++++++++++++++
 
@@ -17,116 +17,183 @@ missing_str = "%s is missing: %s"
 
 # --------------- lists ---------------
 
-achievements_list = [
-    'Crafting Genius', 'World Savior',
-    'Master Explorer', 'Collector Supreme',
-    'Untouchable', 'Boss Slayer',
-    'Strategist', 'Unstoppable',
-    'Speed Runner', 'Survivor',
-    'Treasure Hunter', 'First Steps',
-    'Sharp Mind', 'Hidden Path Finder'
+player_names = [
+    'Alice',
+    'Bob',
+    'Charlie',
+    'Dylan',
 ]
 
 # +++++++++++++++++++++++++++ classes +++++++++++++++++++++++++++
 
 
+class Archivements:
+
+    """
+    This class serves as an container for archievements
+    """
+
+    _achievements_list = [
+        'Crafting Genius', 'World Savior',
+        'Master Explorer', 'Collector Supreme',
+        'Untouchable', 'Boss Slayer',
+        'Strategist', 'Unstoppable',
+        'Speed Runner', 'Survivor',
+        'Treasure Hunter', 'First Steps',
+        'Sharp Mind', 'Hidden Path Finder'
+    ]
+
+    @classmethod
+    def get_len(cls) -> int:
+        return (len(cls._achievements_list))
+
+    @classmethod
+    def get_all(cls) -> set[str]:
+        return (set(cls._achievements_list))
+
+    @classmethod
+    def get_n_random_achievements(cls, n: int) -> set[str]:
+
+        random_achievements: set[str]
+
+        if (n == -1):
+            return (set(cls._achievements_list))
+
+        try:
+            random_achievements = set(
+                rand.sample(cls._achievements_list, n)
+            )
+        except ValueError:
+            random_achievements = set()
+
+        return (random_achievements)
+
+
+class Player:
+
+    """
+    Normally Player would also contains HP, strength, etc... but
+    in this particular case we just have the achievements,
+    class would get to big and I was to lazy ;)
+    """
+
+    _name: str
+    _achievements: set[str]
+
+    def __init__(self, name: str) -> None:
+        self._name = name
+        self._achievements = set()
+
+    def set_achievements(self, achievements: set[str]) -> None:
+        self._achievements = achievements
+
+    def get_achievements(self) -> set[str]:
+        return (self._achievements)
+
+    def get_name(self) -> str:
+        return (self._name)
+
+    def get_unachieved(
+        self,
+        all_achievements: set[str] = Archivements.get_all()
+    ) -> set[str]:
+
+        return (self._achievements.difference(all_achievements))
+
+    def get_unique_achievements(
+        self,
+        other_achievements: list[set[str]]
+    ) -> set[str]:
+
+        unique: set[str]
+
+        unique = self._achievements
+        for achievements in other_achievements:
+            unique = unique.difference(achievements)
+        return (unique)
+
+
 # +++++++++++++++++++++++++++ funcs +++++++++++++++++++++++++++
 
-
-# --------------- process ---------------
+# --------------- explicitly requeseted ---------------
 
 
 def gen_player_achievements() -> set[str]:
 
-    num_achievements: int
-    selected_achievements: set[str]
-    i: int
-    achievement: str
+    """
+    Create a function gen_player_achievements()
+    that will use a large fixed list of achievements
+    to randomly assign a set to a player.
+    Choose a random number of achievements,
+    then pick this number of achievements from the list to build
+    and return the set.
+    """
 
-    num_achievements = random.randint(4, len(achievements_list))
-    selected_achievements = set()
+    number_of_achievements: int
 
-    for i in range(num_achievements):
-        achievement = random.choice(achievements_list)
-        selected_achievements.add(achievement)
-
-    return selected_achievements
-
-
-# --------------- utils ---------------
+    number_of_achievements = rand.randint(0, Archivements.get_len())
+    return (Archivements.get_n_random_achievements(number_of_achievements))
 
 
-def get_only_has(player_achievements: set[str],
-                 all_other_achievements: set[str]) -> set[str]:
-
-    only: set[str]
-
-    only = player_achievements.difference(all_other_achievements)
-    return only
-
-
-# --------------- main ---------------
+# --------------- run ---------------
 
 
 def main() -> None:
 
-    alice_achievements: set[str]
-    bob_achievements: set[str]
-    charlie_achievements: set[str]
-    dylan_achievements: set[str]
-    all_players: dict[str, set[str]]
-
+    players: list[Player]
     all_distinct: set[str]
     common: set[str]
-    others_union: set[str]
-    missing: set[str]
 
-    player_name: str
-    player_set: set[str]
-    other_name: str
-    other_set: set[str]
-
-    print(intro_str)
-
-    alice_achievements = gen_player_achievements()
-    bob_achievements = gen_player_achievements()
-    charlie_achievements = gen_player_achievements()
-    dylan_achievements = gen_player_achievements()
-
-    all_players = {
-        'Alice': alice_achievements,
-        'Bob': bob_achievements,
-        'Charlie': charlie_achievements,
-        'Dylan': dylan_achievements
-    }
-
-    for player_name, player_set in all_players.items():
-        print(player_str % (player_name, player_set))
-
+    print(intro_str, '\n')
+    players = [Player(name) for name in player_names]
     all_distinct = set()
-    for player_set in all_players.values():
-        all_distinct = all_distinct.union(player_set)
-    print(all_distinct_str % all_distinct)
+    common = Archivements.get_all()
 
-    common = alice_achievements.intersection(bob_achievements).intersection(
-        charlie_achievements).intersection(dylan_achievements)
-    print(common_str % common)
-
-    for player_name, player_set in all_players.items():
-        others_union = set()
-        for other_name, other_set in all_players.items():
-            if other_name != player_name:
-                others_union = others_union.union(other_set)
-        print(
-            only_has_str % (
-                player_name, get_only_has(player_set, others_union)
-            )
+    for player in players:
+        player.set_achievements(
+            gen_player_achievements()
         )
 
-    for player_name, player_set in all_players.items():
-        missing = all_distinct.difference(player_set)
-        print(missing_str % (player_name, missing))
+    for player in players:
+        print(
+            player_str % (player.get_name(), player.get_achievements())
+        )
+    print('')
 
+    for player in players:
+        all_distinct = all_distinct.union(player.get_achievements())
+    print(
+        all_distinct_str % all_distinct
+    )
+    print('')
+
+    for player in players:
+        common = common.intersection(player.get_achievements())
+    print(
+        common_str % common
+    )
+    print('')
+
+    for player in players:
+        unique = player.get_achievements()
+
+        for compare in players:
+            if (compare == player):
+                continue
+            unique = unique.difference(compare.get_achievements())
+
+        print(
+            only_has_str % (player.get_name(), unique)
+        )
+    print('')
+
+    for player in players:
+        print(
+            missing_str % (
+                player.get_name(),
+                Archivements.get_all().difference(player.get_achievements())
+            )
+        )
 
 # +++++++++++++++++++++++++++ run +++++++++++++++++++++++++++
 
