@@ -462,7 +462,7 @@ class DataStream:
 
         formats = {
             CSVPlugin: "CSV Output",
-            JSONPlugin: "JSSON Output"
+            JSONPlugin: "JSON Output"
         }
 
         if (not isinstance(plugin, ExportPlugin)):
@@ -479,12 +479,13 @@ class DataStream:
 
             for i in range(nb):
                 ctrl, cont = processor.output()
-                if (ctrl >= -1):
+                if (ctrl >= 0):
                     data.append((ctrl, cont))
 
             plugin.process_output(data)
             print(formats.get(type(plugin)))
             print(plugin)
+            plugin.buffer = ''
 
 # ---------------------------- Plugins ----------------------------
 
@@ -492,19 +493,21 @@ class DataStream:
 @typing.runtime_checkable
 class ExportPlugin(typing.Protocol):
 
+    buffer: str
+
     def process_output(self, data: list[tuple[int, str]]) -> None:
         ...
 
 
 class CSVPlugin:
 
-    _buffer: str
+    buffer: str
 
     def __init__(self) -> None:
-        self._buffer = ''
+        self.buffer = ''
 
     def __str__(self) -> str:
-        return (self._buffer)
+        return (self.buffer)
 
     def process_output(self, data: list[tuple[int, str]]) -> None:
 
@@ -531,18 +534,18 @@ class CSVPlugin:
                     (type(idx), type(cont))
                 )
 
-        self._buffer += f",{cont}" if self._buffer and cont else cont
+            self.buffer += f",{cont}" if self.buffer and cont else cont
 
 
 class JSONPlugin:
 
-    _buffer: str
+    buffer: str
 
     def __init__(self) -> None:
-        self._buffer = ''
+        self.buffer = ''
 
     def __str__(self) -> str:
-        return (self._buffer + "}" if self._buffer else "")
+        return (self.buffer + "}" if self.buffer else "")
 
     def process_output(self, data: list[tuple[int, str]]) -> None:
 
@@ -569,8 +572,8 @@ class JSONPlugin:
                     (type(idx), type(cont))
                 )
 
-            self._buffer += "," if self._buffer else "{"
-            self._buffer += StringContainer.json_basic_str % (idx, cont)
+            self.buffer += "," if self.buffer else "{"
+            self.buffer += StringContainer.json_basic_str % (idx, cont)
 
 
 # ++++++++++++++++++++++++++++ funcs ++++++++++++++++++++++++++++
@@ -589,6 +592,9 @@ class JSONPlugin:
 
 def main() -> None:
 
+    data_stream: DataStream
+    csv_plugin: CSVPlugin
+    json_plugin: JSONPlugin
     test_value: list[typing.Any]
 
     print(intro_str, '\n')
@@ -598,10 +604,13 @@ def main() -> None:
     data_stream.print_processors_stats()
 
     print('')
-    print(register_str)
+    print(register_str, '\n')
     data_stream.register_processor(NumericProcessor())
     data_stream.register_processor(TextProcessor())
     data_stream.register_processor(LogProcessor())
+
+    csv_plugin = CSVPlugin()
+    json_plugin = JSONPlugin()
 
     test_value = [
         'Hello world',
@@ -625,11 +634,10 @@ def main() -> None:
 
     print('')
     print(plugin_str % (3, "CSV"))
-    #call the output pipeline display
-    #print plugin
+    data_stream.output_pipeline(3, csv_plugin)
 
     print('')
-    #display stats
+    data_stream.print_processors_stats()
 
     test_value = [
         21,
@@ -647,14 +655,16 @@ def main() -> None:
         [32, 42, 64, 84, 128, 168],
         'World hello'
     ]
-    print(another_batch_str % test_value, '\n')
-
-    #display stats
-    print(plugin_str % (5, "JSON"))
-    #call the output pipeline display
-    #print plugin
     print('')
-    #display stats
+    print(another_batch_str % test_value, '\n')
+    data_stream.process_stream(test_value)
+    data_stream.print_processors_stats()
+
+    print('')
+    print(plugin_str % (5, "JSON"))
+    data_stream.output_pipeline(5, json_plugin)
+    print('')
+    data_stream.print_processors_stats()
 
 
 # ++++++++++++++++++++++++++++ run ++++++++++++++++++++++++++++
