@@ -146,9 +146,7 @@ class NumericProcessor(DataProcessor):
 
     def validate(self, data: typing.Any) -> bool:
 
-        try:
-            iter(data)
-        except TypeError:
+        if (not isinstance(data, list)):
             data = [data]
 
         for el in data:
@@ -162,9 +160,8 @@ class NumericProcessor(DataProcessor):
         idx: int
 
         local_buffer = []
-        try:
-            iter(data)
-        except TypeError:
+
+        if (not isinstance(data, list)):
             data = [data]
 
         for el in data:
@@ -413,7 +410,7 @@ def main() -> None:
             'log_level': 'IMPORTANT',
             'log_message': 'Server update',
             'specification': 'security update',
-            'time_date': '2085-07-21-23-23-23'
+            'time_date': '2087-07-21-23-23-23'
         }
     ]
     print(processing_str % test_value)

@@ -208,9 +208,7 @@ class NumericProcessor(DataProcessor):
 
     def validate(self, data: typing.Any) -> bool:
 
-        try:
-            iter(data)
-        except TypeError:
+        if (not isinstance(data, list)):
             data = [data]
 
         for el in data:
@@ -224,9 +222,8 @@ class NumericProcessor(DataProcessor):
         idx: int
 
         local_buffer = []
-        try:
-            iter(data)
-        except TypeError:
+
+        if (not isinstance(data, list)):
             data = [data]
 
         for el in data:
