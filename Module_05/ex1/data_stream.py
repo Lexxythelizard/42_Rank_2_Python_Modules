@@ -20,15 +20,6 @@ first_batch_str = "Send first batch of data on stream: %s"
 same_batch_str = "Send the same batch again"
 consume_str = "Consume some elements from the data processors:"
 consume_str += " Numeric %d, Text %d, Log %d"
-extracting_str = ""
-
-bonus_str = "--- additional tests ---"
-bonus_store_add_ctrl_str = "new element should have idx 3"
-bonus_store_empty_str = ""
-bonus_store_empty_not_crash_str = "programm didn't crash :)"
-
-bonus_log_multiple_values = ""
-bonus_log_empty_values = ""
 
 # ---------------------------- container ----------------------------
 

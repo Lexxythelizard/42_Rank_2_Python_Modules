@@ -20,14 +20,6 @@ another_batch_str = "Send another batch of data: %s"
 plugin_str = "Send %d processed data from each processor to a %s plugin:"
 plugin_output_str = "%s Output"
 
-bonus_str = "--- additional tests ---"
-bonus_store_add_ctrl_str = "new element should have idx 3"
-bonus_store_empty_str = ""
-bonus_store_empty_not_crash_str = "programm didn't crash :)"
-
-bonus_log_multiple_values = ""
-bonus_log_empty_values = ""
-
 # ---------------------------- container ----------------------------
 
 
@@ -173,6 +165,7 @@ class DataProcessor(abc.ABC):
     """
 
     _store: typing.Any
+    _processed: int
 
     @abc.abstractmethod
     def validate(self, data: typing.Any) -> bool:
@@ -184,6 +177,7 @@ class DataProcessor(abc.ABC):
 
     def __init__(self) -> None:
         self._store = dict()
+        self._processed = 0
 
     def __len__(self) -> int:
 
@@ -234,7 +228,6 @@ class NumericProcessor(DataProcessor):
     def ingest(self, data: typing.Any) -> None:
 
         local_buffer: list[int | float]
-        idx: int
 
         local_buffer = []
 
@@ -247,14 +240,9 @@ class NumericProcessor(DataProcessor):
 
             local_buffer.append(el)
 
-        try:
-            idx = next(reversed(self._store)) + 1
-        except StopIteration:
-            idx = 0
-
         while (local_buffer):
-            self._store.update({idx: str(local_buffer.pop(0))})
-            idx += 1
+            self._store.update({self._processed: str(local_buffer.pop(0))})
+            self._processed += 1
 
 
 class TextProcessor(DataProcessor):
@@ -279,7 +267,6 @@ class TextProcessor(DataProcessor):
     def ingest(self, data: typing.Any) -> None:
 
         local_buffer: list[str]
-        idx: int
 
         local_buffer = []
         if (not isinstance(data, list)):
@@ -291,14 +278,9 @@ class TextProcessor(DataProcessor):
 
             local_buffer.append(el)
 
-        try:
-            idx = next(reversed(self._store)) + 1
-        except StopIteration:
-            idx = 0
-
         while (local_buffer):
-            self._store.update({idx: local_buffer.pop(0)})
-            idx += 1
+            self._store.update({self._processed: local_buffer.pop(0)})
+            self._processed += 1
 
 
 class LogProcessor(DataProcessor):
@@ -331,7 +313,6 @@ class LogProcessor(DataProcessor):
 
         local_buffer: list[str]
         log_message: str
-        idx: int
 
         local_buffer = []
 
@@ -355,14 +336,9 @@ class LogProcessor(DataProcessor):
 
             local_buffer.append(log_message)
 
-        try:
-            idx = next(reversed(self._store)) + 1
-        except StopIteration:
-            idx = 0
-
         while (local_buffer):
-            self._store.update({idx: local_buffer.pop(0)})
-            idx += 1
+            self._store.update({self._processed: local_buffer.pop(0)})
+            self._processed += 1
 
 
 # ---------------------------- orchestering ----------------------------
