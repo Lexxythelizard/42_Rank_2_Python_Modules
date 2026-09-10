@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 
+from alchemy.grimoire.dark_spellbook import dark_spell_record
+
 # ++++++++++++++++++++++++++++ globals ++++++++++++++++++++++++++++
 
 # ---------------------------- strings ----------------------------
+
 
 class StringContainer:
 
@@ -39,10 +42,11 @@ def validate_ingredients(ingredients: str) -> str:
 
 
 def main() -> None:
-    pass
+    dark_spell_record("Darkest spell ever", "bat arsenic")
 
 
 # ++++++++++++++++++++++++++++ run ++++++++++++++++++++++++++++
+
 
 if __name__ == '__main__':
 

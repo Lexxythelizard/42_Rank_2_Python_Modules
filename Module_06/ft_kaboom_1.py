@@ -2,8 +2,6 @@
 
 # ++++++++++++++++++++++++++++ imports ++++++++++++++++++++++++++++
 
-import alchemy.grimoire as grimoir
-
 # ++++++++++++++++++++++++++++ globals ++++++++++++++++++++++++++++
 
 
@@ -25,8 +23,9 @@ def main() -> None:
     print(FileVariables.name)
     print(FileVariables.include)
     print(FileVariables.test)
+    import alchemy.grimoire.dark_spellbook as dark
 
-    spell = grimoir.dark_spell_record("black fire", "eyeball fire and bat")
+    spell = dark.dark_spell_record("black fire", "eyeball fire and bat")
     print(spell)
 
 # ++++++++++++++++++++++++++++ run ++++++++++++++++++++++++++++
