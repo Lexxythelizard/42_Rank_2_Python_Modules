@@ -15,7 +15,7 @@ import typing
 class StringContainer:
 
     spaceholder = "[Spaceholder]"
-    describtion = "%s is a %s type Creature"
+    description = "%s is a %s type Creature"
     object_str = "Creature: {name: %s, type: %s}"
     attack = "%s uses %s!"
 
@@ -51,7 +51,7 @@ class Creature(abc.ABC):
         return (StringContainer.object_str % (self.__name, self.__type))
 
     def describe(self) -> str:
-        return (StringContainer.desrcibtion % (self.__name, self.__type))
+        return (StringContainer.description % (self.__name, self.__type))
 
     @abc.abstractmethod
     def attack(self, opponent: typing.Any = None) -> str:
