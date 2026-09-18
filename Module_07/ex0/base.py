@@ -33,8 +33,8 @@ class Creature(abc.ABC):
     Generic Creature
     """
 
-    __name: str = "Gen Creature"
-    __type: str = "gen Type"
+    _name: str = "Gen Creature"
+    _type: str = "gen Type"
 
     def __init__(self, name: str = "", typus: str = "") -> None:
 
@@ -43,15 +43,23 @@ class Creature(abc.ABC):
         if (not isinstance(typus, str)):
             raise TypeError(StringContainer.spaceholder)
         if (name):
-            self.__name = name
+            self._name = name
         if (typus):
-            self.__type = typus
+            self._type = typus
 
     def __str__(self) -> str:
-        return (StringContainer.object_str % (self.__name, self.__type))
+        return (StringContainer.object_str % (self._name, self._type))
 
     def describe(self) -> str:
-        return (StringContainer.description % (self.__name, self.__type))
+        return (StringContainer.description % (self._name, self._type))
+
+    @property
+    def name(self) -> str:
+        return (self._name)
+
+    @property
+    def type(self) -> str:
+        return (self._type)
 
     @abc.abstractmethod
     def attack(self, opponent: typing.Any = None) -> str:

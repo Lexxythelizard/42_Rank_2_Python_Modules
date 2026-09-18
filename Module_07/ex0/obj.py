@@ -63,13 +63,13 @@ class Flameling(Creature):
         aim: str
 
         if (isinstance(opponent, Creature)):
-            aim = " against %s" % opponent.describe().split()[0]
+            aim = " against %s" % opponent.name
         else:
             aim = " against %s" % str(opponent) if opponent else ""
 
         return (
             StringContainer.attack %
-            (self.describe().split()[0], AttackContainer.lvl_0_fire, aim)
+            (self.name, AttackContainer.lvl_0_fire, aim)
         )
 
 
@@ -92,13 +92,13 @@ class Aquabub(Creature):
         aim: str
 
         if (isinstance(opponent, Creature)):
-            aim = " against %s" % opponent.describe().split()[0]
+            aim = " against %s" % opponent.name
         else:
             aim = " against %s" % str(opponent) if opponent else ""
 
         return (
             StringContainer.attack %
-            (self.describe().split()[0], AttackContainer.lvl_0_water, aim)
+            (self.name, AttackContainer.lvl_0_water, aim)
         )
 
 
@@ -121,13 +121,13 @@ class Pyrodon(Creature):
         aim: str
 
         if (isinstance(opponent, Creature)):
-            aim = " against %s" % opponent.describe().split()[0]
+            aim = " against %s" % opponent.name
         else:
             aim = " against %s" % str(opponent) if opponent else ""
 
         return (
             StringContainer.attack %
-            (self.describe().split()[0], AttackContainer.lvl_1_fire, aim)
+            (self.name, AttackContainer.lvl_1_fire, aim)
         )
 
 
@@ -150,11 +150,11 @@ class Torragon(Creature):
         aim: str
 
         if (isinstance(opponent, Creature)):
-            aim = " against %s" % opponent.describe().split()[0]
+            aim = " against %s" % opponent.name
         else:
             aim = " against %s" % str(opponent) if opponent else ""
 
         return (
             StringContainer.attack %
-            (self.describe().split()[0], AttackContainer.lvl_1_water, aim)
+            (self.name, AttackContainer.lvl_1_water, aim)
         )
