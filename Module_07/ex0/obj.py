@@ -29,7 +29,7 @@ class BaseCreatureValues:
 class EvolvedCreatureValues:
 
     torragon = ("Torragon", "Water")
-    pyrodon = ("Pyrodon", "Fire")
+    pyrodon = ("Pyrodon", "Fire/Flying")
 
 
 class AttackContainer:
