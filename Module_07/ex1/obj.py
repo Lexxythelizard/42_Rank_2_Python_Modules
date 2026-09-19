@@ -175,7 +175,7 @@ class Shiftling(Creature, TransformCapability):
         if (self._transformed):
             return ((self.name + AttackContainer.lvl_0_morphed + aim + '!'))
         else:
-            return (AttackContainer.lvl_0_normal % (self.name, opponent.name))
+            return (AttackContainer.lvl_0_normal % (self.name, aim))
 
     def transform(self) -> str:
         self._transformed = True
@@ -215,7 +215,7 @@ class Morphagon(Creature, TransformCapability):
         if (self._transformed):
             return ((self.name + AttackContainer.lvl_1_morphed + aim + '!'))
         else:
-            return (AttackContainer.lvl_1_normal % (self.name, opponent.name))
+            return (AttackContainer.lvl_1_normal % (self.name, aim))
 
     def transform(self) -> str:
         self._transformed = True

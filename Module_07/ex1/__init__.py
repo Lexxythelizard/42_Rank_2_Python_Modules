@@ -1,4 +1,4 @@
-from ex0.factory import HealingCreatureFactory, TransformCreatureFactory
+from ex1.factory import HealingCreatureFactory, TransformCreatureFactory
 
 __version__ = "x.x.x"
 __author__ = "lenivorb"
