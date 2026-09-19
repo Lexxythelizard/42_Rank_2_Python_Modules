@@ -48,7 +48,7 @@ class ControlValues:
 # ---------------------------- test ----------------------------
 
 
-def test_factory(factory: type[hint.Factory]) -> None:
+def test_factory(factory: type[hint.CreatureFactory]) -> None:
 
     """
     Takes a factory as an argument,
@@ -62,7 +62,7 @@ def test_factory(factory: type[hint.Factory]) -> None:
     print(FileVariables.test_0)
 
     print(FileVariables.test_0_1, end='')
-    assert (isinstance(factory, type(hint.Factory)) is True)
+    assert (isinstance(factory, type(hint.CreatureFactory)) is True)
     print(type(factory), '\t\t', FileVariables.valid)
 
     print(FileVariables.test_0_2, end='')
@@ -108,7 +108,8 @@ def test_factory(factory: type[hint.Factory]) -> None:
 
 
 def test_battle(
-    factory_a: type[hint.Factory], factory_b: type[hint.Factory]
+    factory_a: type[hint.CreatureFactory],
+    factory_b: type[hint.CreatureFactory]
 ) -> None:
 
     """
@@ -123,10 +124,10 @@ def test_battle(
     print(FileVariables.test_1)
 
     print(FileVariables.test_0_1, end='')
-    assert (isinstance(factory_a, type(hint.Factory)) is True)
+    assert (isinstance(factory_a, type(hint.CreatureFactory)) is True)
     print(type(factory_a), '\t\t', FileVariables.valid)
     print(FileVariables.test_0_1, end='')
-    assert (isinstance(factory_a, type(hint.Factory)) is True)
+    assert (isinstance(factory_a, type(hint.CreatureFactory)) is True)
     print(type(factory_b), '\t\t', FileVariables.valid)
 
     print(FileVariables.test_0_2, end='')
@@ -150,7 +151,8 @@ def test_battle(
 
 
 def test_battle_additional(
-    factory_a: type[hint.Factory], factory_b: type[hint.Factory]
+    factory_a: type[hint.CreatureFactory],
+    factory_b: type[hint.CreatureFactory]
 ) -> None:
 
     pass

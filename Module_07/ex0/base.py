@@ -66,7 +66,7 @@ class Creature(abc.ABC):
         pass
 
 
-class Factory(abc.ABC):
+class CreatureFactory(abc.ABC):
 
     """
     Generic Factory

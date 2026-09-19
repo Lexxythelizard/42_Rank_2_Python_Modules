@@ -18,7 +18,7 @@ class StringContainer:
 # ++++++++++++++++++++++++++++ classes ++++++++++++++++++++++++++++
 
 
-class FlameFactory(blueprint.Factory):
+class FlameFactory(blueprint.CreatureFactory):
 
     """
     Factory for Fire type Creatures
@@ -36,7 +36,7 @@ class FlameFactory(blueprint.Factory):
         return (cls._evolved())
 
 
-class AquaFactory(blueprint.Factory):
+class AquaFactory(blueprint.CreatureFactory):
 
     """
     Factory for Water type Creatures
